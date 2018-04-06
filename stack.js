@@ -27,6 +27,7 @@ class Stack {
     return pop.value;
   }
 }
+module.exports = Stack;
 
 function peek(stack) {
   return stack.top.value;
@@ -52,7 +53,18 @@ function main() {
   console.log(display(starTrek));
   // console.log(JSON.stringify(starTrek, null, 4));
 }
+// main();
 
-main();
+function isPalindrome(str) {
+  str = str.toLowerCase().replace(/[^a-zA-Z0-9]/g, '');
+  let stack = new Stack();
+  for (let i = 0; i < str.length; i++) {
+    stack.push(str[i]);
+  }
+  for (let i = 0; i < str.length; i++) {
+    if (stack.pop() !== str[i]) return false;
+  }
+  return true;
+}
 
-module.exports = Stack;
+console.log(isPalindrome('theht'));
