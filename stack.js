@@ -32,6 +32,16 @@ function peek(stack) {
   return stack.top.value;
 }
 
+function display(stack) {
+  let tempNode = stack.top;
+  let result = peek(stack);
+  while (tempNode.next) {
+    tempNode = tempNode.next;
+    result = tempNode.value + ', ' + result;
+  }
+  return result;
+}
+
 function main() {
   let starTrek = new Stack();
   starTrek.push('Kirk');
@@ -39,7 +49,8 @@ function main() {
   starTrek.push('McCoy');
   starTrek.push('Scotty');
   console.log(peek(starTrek));
-  console.log(JSON.stringify(starTrek, null, 4));
+  console.log(display(starTrek));
+  // console.log(JSON.stringify(starTrek, null, 4));
 }
 
 main();
