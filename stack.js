@@ -61,7 +61,7 @@ function isPalindrome(str) {
   for (let i = 0; i < str.length; i++) {
     stack.push(str[i]);
   }
-  for (let i = 0; i < str.length; i++) {
+  for (let i = 0; i < str.length / 2; i++) {
     if (stack.pop() !== str[i]) return false;
   }
   return true;
@@ -71,26 +71,71 @@ function isPalindrome(str) {
 
 function isMatched(str) {
   let stack = new Stack();
-  let validOpenChars = { '(': true, '{': true, '[': true};
-  const validClosedChars = { ')': '(', '}': '{', ']': '['};
-  const inQuotes = { '"': false, "'": false};
+  let validOpenChars = { '(': true, '{': true, '[': true };
+  const validClosedChars = { ')': '(', '}': '{', ']': '[' };
+  const inQuotes = { '"': false, "'": false };
+
   for (let i = 0; i < str.length; i++) {
-    if (inQuotes['"'] || inQuotes["'"]) {
+    if (str[i] === '"' || str[i] === "'") {
+      str[i] === '"'
+        ? (inQuotes['"'] = !inQuotes['"'])
+        : (inQuotes["'"] = !inQuotes["'"]);
       continue;
-    } else if (str[i] === '"' || str[i] === "'") {
-      str[i] === '"' ? inQuotes['"'] = !inQuotes['"'] : inQuotes["'"] = !inQuotes["'"];
+    } else if (inQuotes['"'] || inQuotes["'"]) {
       continue;
     }
+
     if (validOpenChars[str[i]]) {
       stack.push(str[i]);
     } else if (validClosedChars[str[i]]) {
       let compare = stack.pop();
-      if (validClosedChars[str[i]] !== compare) return false;
-    } else {
-      return 'Invalid input string';
-    }
+      if (validClosedChars[str[i]] !== compare) return `False at index ${i}`;
+    } 
+    // else {
+    //   return 'Invalid input string';
+    // }
   }
-  return true;
+
+  return inQuotes['"'] || inQuotes["'"]
+    ? "False you didn't close your string"
+    : 'True';
 }
 
-console.log(isMatched('["()he\'llo!"{}]()'));
+console.log(isMatched('(3 + 5) + (2 + 1)'));
+
+// function sort(stack) {
+//   let prevMax = Number.POSITIVE_INFINITY;
+//   let max = Number.NEGATIVE_INFINITY;
+//   let result = new Stack();
+//   while (max !== prevMax) {
+//     let temp = stack;
+//     while (temp.top) {
+//       console.log(temp);
+//       let candidate = temp.pop();
+//       max = candidate > max && candidate < prevMax ? candidate : max;
+//     }
+//     prevMax = max;
+//     result.push(max);
+//     max = Number.NEGATIVE_INFINITY;
+//   }
+//   return result;
+// }
+
+function sort(stack) {
+  let temp = new Stack();
+  while (stack.top) {
+    let val = stack.pop();
+    while (temp.top && peek(temp) > val) {
+      stack.push(temp.pop());
+    }
+    temp.push(val);
+  }
+  return temp;
+}
+
+let stack = new Stack();
+stack.push(0);
+stack.push(4);
+stack.push(2);
+
+console.log(display(sort(stack)));
