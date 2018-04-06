@@ -67,4 +67,30 @@ function isPalindrome(str) {
   return true;
 }
 
-console.log(isPalindrome('theht'));
+// console.log(isPalindrome('theht'));
+
+function isMatched(str) {
+  let stack = new Stack();
+  let validOpenChars = { '(': true, '{': true, '[': true};
+  const validClosedChars = { ')': '(', '}': '{', ']': '['};
+  const inQuotes = { '"': false, "'": false};
+  for (let i = 0; i < str.length; i++) {
+    if (inQuotes['"'] || inQuotes["'"]) {
+      continue;
+    } else if (str[i] === '"' || str[i] === "'") {
+      str[i] === '"' ? inQuotes['"'] = !inQuotes['"'] : inQuotes["'"] = !inQuotes["'"];
+      continue;
+    }
+    if (validOpenChars[str[i]]) {
+      stack.push(str[i]);
+    } else if (validClosedChars[str[i]]) {
+      let compare = stack.pop();
+      if (validClosedChars[str[i]] !== compare) return false;
+    } else {
+      return 'Invalid input string';
+    }
+  }
+  return true;
+}
+
+console.log(isMatched('["()he\'llo!"{}]()'));
